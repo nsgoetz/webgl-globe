@@ -17,8 +17,16 @@ DAT.Globe = function(container, opts) {
   opts = opts || {};
   
   var colorFn = opts.colorFn || function(x) {
-    var c = new THREE.Color();
-    c.setHSL( ( 0.6 - ( x * 0.5 ) ), 1.0, 0.5 );
+    var c = new THREE.Color();;
+    if(x == -1){
+      c.setHSL(1, 0, 0.4);
+    } else if(x < 0.5){
+      c.setHSL(1, 1, .33 + Math.pow((1-((0.5-x) * 2) ), 2)*(0.66) );
+    } else {
+      c.setHSL(0.66, 1, .33 + Math.pow((1-((x - 0.5) * 2)), 2)*(0.66) );
+    }
+    // var c = new THREE.Color();
+    //c.setHSL( ( 0.6 - ( x * 0.5 ) ), 1.0, 0.5 );
     return c;
   };
   var imgDir = opts.imgDir || '/globe/';
