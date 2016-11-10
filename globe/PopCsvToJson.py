@@ -75,5 +75,5 @@ data2012 = [i for sublist in data2012 for i in sublist]
 data2016 = [i for sublist in data2016 for i in sublist]
 
 with open(jsonFileName, 'w') as outfile:
-    writeData = [["2016", data2016], ["2012", data2012]]
+    writeData = [["2012", data2012], ["2016", data2016]]
     json.dump(writeData, outfile, indent=None, sort_keys=True, separators=(',',':'))
