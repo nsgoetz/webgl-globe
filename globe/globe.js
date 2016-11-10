@@ -218,7 +218,7 @@ DAT.Globe = function(container, opts) {
       addPoint(lat, lng, size, color, subgeo);
     }
     if (opts.animated) {
-      this._baseGeometry.morphTargets.push({'name': opts.name, vertices: subgeo.vertices});
+      this._baseGeometry.morphTargets.push({'name': opts.name, vertices: subgeo.vertices, colors: subgeo.colors });
     } else {
       this._baseGeometry = subgeo;
     }
@@ -241,12 +241,14 @@ DAT.Globe = function(container, opts) {
           for(var i=0; i<=padding; i++) {
             console.log('padding',i);
             this._baseGeometry.morphTargets.push({'name': 'morphPadding'+i, vertices: this._baseGeometry.vertices});
+            this._baseGeometry.morphColors.push({'name': 'morphPadding'+i, colors: this._baseGeometry.colors});
           }
         }
         this.points = new THREE.Mesh(this._baseGeometry, new THREE.MeshBasicMaterial({
               color: 0xffffff,
               vertexColors: THREE.FaceColors,
-              morphTargets: true
+              morphTargets: true,
+              morphColors: true
             }));
       }
       scene.add(this.points);
@@ -342,9 +344,9 @@ DAT.Globe = function(container, opts) {
   }
 
   function onWindowResize( event ) {
-    camera.aspect = container.offsetWidth / container.offsetHeight;
+    camera.aspect = window.innerWidth / window.innerHeight;
     camera.updateProjectionMatrix();
-    renderer.setSize( container.offsetWidth, container.offsetHeight );
+    renderer.setSize( window.innerWidth, window.innerHeight );
   }
 
   function zoom(delta) {
@@ -387,6 +389,7 @@ DAT.Globe = function(container, opts) {
     var morphDict = this.points.morphTargetDictionary;
     for(var k in morphDict) {
       if(k.indexOf('morphPadding') < 0) {
+        console.log("validMorphs = ", validMorphs);
         validMorphs.push(morphDict[k]);
       }
     }
